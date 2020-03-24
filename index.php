@@ -8,122 +8,134 @@
 <body>
 	<h4>1.<br></h4>
 	<?php 
-		$a = 5;
-		$b = 2;
-		if ($a >= 0 && $b >= 0) 
-			echo $a - $b;
-		elseif ($a < 0 && $b < 0) 
-			echo $a*$b;
-		else echo $a + $b;
+		$i = 0;
+		while ($i++ <= 100){
+			if ($i % 3 == 0){
+				echo $i.' ';
+			}
+			
+		}
 	?>
 	<h4>2.<br></h4>
 	<?php
-		$a = 10;
-		switch ($a){
-			case 0:
-				echo '0 ';
-			case 1:
-				echo '1 ';
-			case 2:
-				echo '2 ';
-			case 3:
-				echo '3 ';
-			case 4:
-				echo '4 ';
-			case 5:
-				echo '5 ';
-			case 6:
-				echo '6 ';
-			case 7:
-				echo '7 ';
-			case 8:
-				echo '8 ';
-			case 9:
-				echo '9 ';
-			case 10:
-				echo '10 ';
-			case 11:
-				echo '11 ';
-			case 12:
-				echo '12 ';
-			case 13:
-				echo '13 ';
-			case 14:
-				echo '14 ';
-			case 15:
-				echo '15 ';
-		}
+		$i = 0;
+		echo $i++.' - ноль.<br>';
+		do {
+			if ($i % 2 == 0) {
+				echo $i.' - четное число.<br>';
+			} else {
+				echo $i.' - нечетное число.<br>';
+			}
+		} while ($i++ < 10);
 	?>
 	<h4>3.<br></h4>
 	<?php 
-		function sum($a,$b){
-			return $a + $b;
+		$array = [
+			'Московская область' => ["Москва","Зеленоград","Клин"],
+			"Ленинградская область" => ["Санкт-Петербург", "Всеволожск", "Павловск", "Кронштадт"]
+		];
+		foreach ($array as $key => $value){
+			echo $key.':<br>';
+			for ($i = 0; $i < count($value); $i++){
+			echo $value[$i].', ';
+			}
+			echo '<br>';
 		}
-		function raz($a,$b){
-			return $a - $b;
-		}
-		function mult($a,$b){
-			return $a * $b;
-		}
-		function del($a,$b){
-			return $a / $b;
-		}
-		echo del(3,2);
 	?>
 	<h4>4.<br></h4>
 	<?php 
-		function mathOperation($arg1, $arg2, $operation){
-			switch ($operation){
-				case 'sum':
-					echo sum($arg1,$arg2);
-					break;
-				case 'raz':
-					echo raz($arg1,$arg2);
-					break;
-				case 'mult':
-					echo mult($arg1,$arg2);
-					break;
-				case 'del':
-					echo del($arg1,$arg2);
-					break;
-			}
-		}
-		mathOperation(15,4,'raz');
-	?>
-	<h4>6.<br></h4>
-	<?php 
-		function power($val, $pow){
-			if ($pow == 1){
-				return $val;
-			} else return power($val,$pow - 1)*$val;
-		}
-		echo power(2,10);
-	?>
-	<h4>7.<br></h4>
-	<?php 
-		echo $hour = +date('G').' ';
-		$hour_ost = $hour % 10;
-		if ($hour > 4 && $hour < 21) {
-			echo 'часов ';
-		} elseif ($hour_ost == 1) {
-			echo 'час ';
-		} else echo 'часа ';
+	function translit($str = 'Предложение для задания.'){
+		$array = [
+			'а' => 'a',   'б' => 'b',   'в' => 'v',
+        'г' => 'g',   'д' => 'd',   'е' => 'e',
+        'ё' => 'e',   'ж' => 'zh',  'з' => 'z',
+        'и' => 'i',   'й' => 'y',   'к' => 'k',
+        'л' => 'l',   'м' => 'm',   'н' => 'n',
+        'о' => 'o',   'п' => 'p',   'р' => 'r',
+        'с' => 's',   'т' => 't',   'у' => 'u',
+        'ф' => 'f',   'х' => 'h',   'ц' => 'c',
+        'ч' => 'ch',  'ш' => 'sh',  'щ' => 'sch',
+        'ь' => '\'',  'ы' => 'y',   'ъ' => '\'',
+        'э' => 'e',   'ю' => 'yu',  'я' => 'ya',
+        
+        'А' => 'A',   'Б' => 'B',   'В' => 'V',
+        'Г' => 'G',   'Д' => 'D',   'Е' => 'E',
+        'Ё' => 'E',   'Ж' => 'Zh',  'З' => 'Z',
+        'И' => 'I',   'Й' => 'Y',   'К' => 'K',
+        'Л' => 'L',   'М' => 'M',   'Н' => 'N',
+        'О' => 'O',   'П' => 'P',   'Р' => 'R',
+        'С' => 'S',   'Т' => 'T',   'У' => 'U',
+        'Ф' => 'F',   'Х' => 'H',   'Ц' => 'C',
+        'Ч' => 'Ch',  'Ш' => 'Sh',  'Щ' => 'Sch',
+        'Ь' => '\'',  'Ы' => 'Y',   'Ъ' => '\'',
+        'Э' => 'E',   'Ю' => 'Yu',  'Я' => 'Ya',
+		];
+		return strtr($str, $array);
+	}
 		
-		echo $minute = +date('i').' ';
-		$minute_ost = $minute % 10;
-		if ($minute >4 && $minute < 21){
-			echo 'минут ';
-		} elseif ($minute_ost == 1) {
-			echo 'минута ';
-		} elseif ($minute_ost > 1 && $minute_ost < 5){
-			echo 'минуты ';
-		} else echo 'минут ';
+		
+		
+		
+		echo translit();
+		
+	
 		
 	?>
 	<h4>5.<br></h4>
 	<?php 
+	function podcherk($str = 'Предложение для задания.'){
+		
+		return str_replace(' ','_',$str);
+	}
+	
+	echo podcherk();
+	?>
+	<h4>6.<br></h4>
+	<?php 
 		$str = file_get_contents('main.html');
-		echo str_replace('{date}',date('Y'),$str);
+		$menu = ['Menu_1','Menu_2',['Sub_menu_1','Sub_menu_2'],'Menu_3'];
+		$menu_str = '';
+		for ($i = 0; $i < count($menu); $i++){
+			if (!is_array($menu[$i])){
+				$menu_str .= '<li>'.$menu[$i].'</li>';
+			} else {
+				$menu_str .= '<ul>';
+				for ($j = 0; $j < count($menu[$i]); $j++){
+					$menu_str .= '<li>'.$menu[$i][$j].'</li>';
+				}
+				$menu_str .= '</ul>';
+			}
+		}
+		
+		
+		echo str_replace('{Menu}',$menu_str,$str);
+	?>
+	<h4>7.<br></h4>
+	<?php 
+		for ($i=0; $i<10; print $i++.' '){}
+	?>
+	<h4>8.<br></h4>
+	<?php 
+		$array = [
+			'Московская область' => ["Москва","Зеленоград","Клин"],
+			"Ленинградская область" => ["Санкт-Петербург", "Всеволожск", "Павловск", "Кронштадт"]
+		];
+		foreach ($array as $key => $value){
+			echo $key.':<br>';
+			for ($i = 0; $i < count($value); $i++){
+				if (mb_substr ($value[$i], 0, 1, 'utf-8') == 'К'){
+					echo $value[$i].' ';
+				}
+			}
+			echo '<br>';
+		}
+	?>
+	<h4>9.<br></h4>
+	<?php 
+		function URL_adr($str = 'Предложение для задания.'){
+			return podcherk(translit($str));
+		}
+		echo URL_adr();
 	?>
 	
 	
