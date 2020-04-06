@@ -1,22 +1,23 @@
 <?php
-$html = file_get_contents('main.html');
 $link = mysqli_connect('localhost', 'root', '', 'GB');
-
-
-
-include 'gallery.php';
-$gallery_html = galery_render('img', $link);
+define('GALLERY_DIR', 'img');
 
 $time =  date('d.m.y H:i:s');
 file_put_contents('log.txt', $time . PHP_EOL, FILE_APPEND);
 
 
-if (!empty($_GET['item'])){
-    $sql = "SELECT `id`, `name`, `size`, `descr`, `views` FROM `img` WHERE `id` = {$_GET['item']}";
-    $result = mysqli_query($link, $sql);
-    header('Location: /single.php?id=' . mysqli_fetch_assoc($result)['id']);
-    exit;
+$id = (int) $_GET['item'];
+$page_html = '';
+
+if (empty($id)){
+    include 'gallery.php';
+    $page_html = gallery_render(GALLERY_DIR, $link);
+} else {
+    include 'single.php';
+    $page_html = page_render(GALLERY_DIR, $link, $id);
 }
 
-echo str_replace('{Gallery}',$gallery_html,$html);
+
+$html = file_get_contents('main.html');
+echo str_replace('{Gallery}',$page_html,$html);
     

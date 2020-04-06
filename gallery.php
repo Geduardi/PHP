@@ -1,5 +1,5 @@
 <?php
-function galery_render($gallery_dir, $link){
+function gallery_render($gallery_dir, $link){
 
     $sql = "SELECT `id`, `name`, `size`, `descr`, `views` FROM `img` ORDER BY `views` DESC";
 
@@ -7,7 +7,7 @@ function galery_render($gallery_dir, $link){
     $gallery_html = '';
     while ($row = mysqli_fetch_assoc($result)){
         $gallery_html .= "
-            <a href=\"?item={$row['id']}\" target=\"_blank\"><img src=\"$gallery_dir\\{$row['name']}\" style=\"width: 30vw\"></a>
+            <a href=\"?item={$row['id']}\"><img src=\"$gallery_dir\\{$row['name']}\" style=\"width: 30vw\"></a>
         ";
     }
 
