@@ -16,7 +16,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 $sql = "SELECT id,`user_name`, `text` FROM `review` WHERE item_id =" . $id . " ORDER BY `id` DESC";
-$result = mysqli_query($link,$sql);
+$result = mysqli_query(getConnection(),$sql);
 
 $page_html='<div class="reviews">';
 while ($row = mysqli_fetch_assoc($result)){

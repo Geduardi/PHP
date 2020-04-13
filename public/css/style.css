@@ -89,6 +89,22 @@ header > nav > div > div > a:hover {
     cursor: pointer;
 }
 
+
+
+.header__entry{
+
+}
+.header__entry > button{
+
+    padding: 8px 10px;
+    height: 50px;
+    text-align: center;
+    background-color: #fbfbfb;
+    color: #000;
+    border-radius: 2px;
+    transition: background-color 0.2s ease;
+}
+
 h1 {
     margin: 20px 0;
     font-weight: 100;
@@ -117,6 +133,15 @@ p {
     justify-content: space-around;
     flex-wrap: wrap;
 
+}
+.gallery_box{
+    display: flex;
+    flex-direction: column;
+}
+.gallery_deleteBtn{
+    text-decoration: none;
+    color: blue;
+    font-weight: 700;
 }
 
 .calculator{
@@ -186,6 +211,19 @@ p {
     font-size: 18px;
 }
 
+.entry_form{
+    height: 40vh;
+    margin: 10px 15%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.entry_form > input{
+    height: 30px;
+    text-align: center;
+    min-width: 100px;
+}
 
 
 input::-webkit-outer-spin-button,
