@@ -17,4 +17,5 @@ if (password_verify($password,$row['password'])){
     $_SESSION['login'] = $login;
     $_SESSION['name'] = $row['fio'];
 }
-header('location: /?page=5');
+//header('location: /?page=5');
+redirect('?page=5');

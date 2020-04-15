@@ -10,6 +10,29 @@ function getPage(array $pages){
     return $pages[$pageNumber];
 }
 
+function getContent(){
+    $page = getPage(include 'pages.php');
+    $fileName = getFileName($page);
+    if (!file_exists($fileName)){
+        $fileName = getFileName('index');
+    }
+    include $fileName;
+    $action = 'index';
+    if (!empty($_GET['action'])){
+        $action = $_GET['action'];
+    }
+    if (!function_exists($action . 'Action')){
+        $action = 'index';
+    }
+    $actionName = $action . 'Action';
+    return $actionName();
+}
+
+function getFileName($file)
+{
+    return dirname(__DIR__) . "/pages/" . $file;
+}
+
 function getId()
 {
     if (!empty($_GET['id'])) {
@@ -27,34 +50,26 @@ function getConnection(){
     return $link;
 }
 
-function addCartAction(){
-    $id = getId();
-
-    if (!$id){
-        exit;
-    }
-    $sql = "SELECT `id`, `item_name`, `price` FROM `items` WHERE `id` =" . $id;
-    $result = mysqli_query(getConnection(), $sql);
-    $item = mysqli_fetch_assoc($result);
-    if (empty($_SESSION['goods'][$id])){
-        $count = 1;
-        $_SESSION['goods'][$id] = [$item['item_name'],$item['price'], $count];
-    } else {
-        $_SESSION['goods'][$id][2]++;
+function redirect($path = '', $msg = '')
+{
+    if (!empty($msg)) {
+        $_SESSION[MSG] = $msg;
     }
 
+    if (empty($path)) {
+        $path = $_SERVER['HTTP_REFERER'];
+    }
+
+    header('Location: ' . $path);
 }
 
-function delCartAction(){
-    $id = getId();
-    if (!$id){
-        exit;
+function getMsg()
+{
+    $msg = '';
+    if ($_SESSION[MSG]) {
+        $msg = $_SESSION[MSG];
+        unset($_SESSION[MSG]);
     }
-    if (!empty($_SESSION['goods'][$id])){
-       if ($_SESSION['goods'][$id][2] > 1){
-           $_SESSION['goods'][$id][2]--;
-       } else {
-           unset($_SESSION['goods'][$id]);
-       }
-    }
+
+    return $msg;
 }

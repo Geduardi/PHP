@@ -1,22 +1,23 @@
 <?php
 
-
-if ($_SERVER['REQUEST_METHOD'] =='POST'){
-    if ($_POST['registration']){
-        include "component/auth_register.php";
-    } else {
-        include "component/auth_entry.php";
+function indexAction(){
+    if ($_SERVER['REQUEST_METHOD'] =='POST'){
+        if ($_POST['registration']){
+            include "component/auth_register.php";
+        } else {
+            include "component/auth_entry.php";
+        }
     }
-}
 
 
-if (!empty($_GET['exit'])){
-    session_destroy();
-    header('location: /?page=5');
-}
+    if (!empty($_GET['exit'])){
+        session_destroy();
+//        header('location: /?page=5');
+        redirect('?page=5','Досвидания!');
+    }
 
-if (empty($_SESSION['auth'])){
-    $page_html = <<<HTML
+    if (empty($_SESSION['auth'])){
+        $page_html = <<<HTML
 <form method="post" >
     <fieldset class="entry_form"><legend>Вход</legend>
         <input type="text" name="login" placeholder="Login">
@@ -35,11 +36,18 @@ if (empty($_SESSION['auth'])){
     </fieldset>
 </form>
 HTML;
-} else $page_html = <<<HTML
+    } else $page_html = <<<HTML
     <h1>Добро пожаловать, {$_SESSION['name']}!</h1>
     <p>Вы вошли как: {$_SESSION['login']}</p>
     <a href="?page=5&exit=1">Выход</a>
 HTML;
 
-echo $page_html;
+    return $page_html;
+}
+
+function registerAction(){
+
+}
+
+
 

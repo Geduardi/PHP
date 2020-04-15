@@ -17,6 +17,5 @@ $_SESSION['login'] = $login;
 $_SESSION['name'] = $name;
 
 
-
-
-header('location: /?page=5');
+//header('location: /?page=5');
+redirect('?page=5');

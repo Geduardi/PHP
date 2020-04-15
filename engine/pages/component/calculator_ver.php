@@ -7,8 +7,8 @@ $page_html = <<<php
         <input type="number" name="var_2">
         {RESULT}
 php;
-if (!empty($_GET['action'])){
-    $func = $_GET['action'];
+if (!empty($_GET['operation'])){
+    $func = $_GET['operation'];
     if ($_GET['var_1'] != '' && $_GET['var_2'] != '') {
         $page_html = "<h1>{$func($_GET['var_1'],$_GET['var_2'])}</h1>" . $page_html;
     } else {
@@ -18,7 +18,7 @@ if (!empty($_GET['action'])){
 
 if ($_GET['ver'] == 1){
     $module_html = "
-        <select name=\"action\">
+        <select name=\"operation\">
             <option value=\"sum\">+</option>
             <option value=\"razn\">-</option>
             <option value=\"del\">/</option>
@@ -29,10 +29,10 @@ if ($_GET['ver'] == 1){
 } else {
     $module_html = "
         <div class='calculator__buttons'>
-            <button name=\"action\" value=\"sum\">+</button>
-            <button name=\"action\" value=\"razn\">-</button>
-            <button name=\"action\" value=\"del\">/</button>
-            <button name=\"action\" value=\"mult\">*</button>
+            <button name=\"operation\" value=\"sum\">+</button>
+            <button name=\"operation\" value=\"razn\">-</button>
+            <button name=\"operation\" value=\"del\">/</button>
+            <button name=\"operation\" value=\"mult\">*</button>
         </div>";
     $result_html = '';
     $page_html = str_replace(['{MODULE}','{RESULT}'], [$module_html, $result_html], $page_html);
@@ -40,4 +40,4 @@ if ($_GET['ver'] == 1){
 
 $page_html .= "<input type='hidden' name='ver' value='{$_GET['ver']}'></form>";
 
-echo $page_html;
+return $page_html;
