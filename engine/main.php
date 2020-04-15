@@ -5,6 +5,10 @@
     const GOODS = 'goods';
     const MSG = 'msg';
     const AUTH = 'auth';
+    const ADMIN = 'admin'; //пароль: 123
+    const NAME = 'name';
+    const LOGIN = 'login';
+    const USER_ID = 'user_id';
     include 'config/lib.php';
 //    $page = getPage(include 'config/pages.php');
     $content = getContent();
@@ -16,8 +20,8 @@
 
     if (!empty($content)){
         echo str_replace(
-            ['{HTML_TEXT}','{ENTRY}', '{Message}'],
-            [$content, include 'pages/component/main_entry.php', getMsg()],
+            ['{HTML_TEXT}','{ENTRY}', '{Message}','{COUNT}'],
+            [$content, include 'pages/component/main_entry.php', getMsg(),countBasket()],
             file_get_contents('../engine/main.html'));
     }
 

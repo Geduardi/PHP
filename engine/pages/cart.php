@@ -2,12 +2,12 @@
 
 
 function addAction(){
-    if ($_SESSION['auth']){
+    if ($_SESSION[AUTH]){
         $id = getId();
 
         if (!$id){
-            redirect('?p=2', 'Что-то пошло не так');
-            return;
+            redirect('', 'Что-то пошло не так');
+            return false;
         }
         $sql = "SELECT `id`, `item_name`, `price` FROM `items` WHERE `id` =" . $id;
         $result = mysqli_query(getConnection(), $sql);
@@ -22,17 +22,56 @@ function addAction(){
             $_SESSION[GOODS][$id]['count']++;
         }
         redirect("", 'Товар добавлен в корзину');
-        return;
+        return true;
 
     } else {
-        redirect('?p=2', 'Нужно авторизоваться!');
-        return;
+        redirect('', 'Нужно авторизоваться!');
+        return false;
     }
 
 }
 
+function ajaxAddAction()
+{
+    if ($_SESSION[AUTH]){
+        header('Content-Type: application/json');
+        $id = getId();
+
+        if (!$id){
+            $response = [
+                'count' => false
+            ];
+        }
+        $sql = "SELECT `id`, `item_name`, `price` FROM `items` WHERE `id` =" . $id;
+        $result = mysqli_query(getConnection(), $sql);
+        $item = mysqli_fetch_assoc($result);
+        if (empty($_SESSION[GOODS][$id])){
+            $count = 1;
+            $_SESSION[GOODS][$id] = [
+                'name' => $item['item_name'],
+                'price' => $item['price'],
+                'count' => $count];
+        } else {
+            $_SESSION[GOODS][$id]['count']++;
+        }
+        $response = [
+            'count' => countBasket()
+        ];
+
+
+    } else {
+        $response = [
+            'count' => false
+        ];
+
+    }
+
+    echo json_encode($response);
+
+}
+
 function delAction(){
-    if (!empty($_SESSION['auth'])){
+    if (!empty($_SESSION[AUTH])){
         $id = getId();
         if (!$id){
             return false;
@@ -52,13 +91,15 @@ function delAction(){
 }
 
 function indexAction(){
-    if ($_SESSION['auth']){
+    if ($_SESSION[AUTH]){
         $content = '<h1>Корзина</h1>';
         if (empty($_SESSION[GOODS])){
             return $content . '<h4>Товаров нет</h4>';
         }
+        $totalSum = 0;
         foreach ($_SESSION[GOODS] as $itemId => $item){
             $sum = $item['price']*$item['count'];
+            $totalSum += $sum;
             $content .= <<<HTML
             <div>
                    <h2>Товар: {$item['name']}</h2>
@@ -70,6 +111,11 @@ function indexAction(){
             </div>
 HTML;
         }
+        $content .= <<<HTML
+        <h2>Всего: $totalSum</h2>
+        <a href="?page=3&action=prepare">Оформить заказ</a>
+HTML;
+
         return $content;
     } else {
         return "<h1>Нужно авторизоваться!</h1>";

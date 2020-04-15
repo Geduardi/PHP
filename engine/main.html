@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 	<link rel="stylesheet" href="css/style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
 <body>
 <header>
@@ -20,12 +21,15 @@
 			</div>
 		</div>
 		<div>
-			<a href="?page=6"><span>Корзина</span></a>
+			<a href="?page=6"><span>Корзина</span>(<span id="basket">{COUNT}</span>)</a>
+		</div>
+		<div>
+			<a href="?page=3"><span>Заказы</span></a>
 		</div>
 	</nav>
 	{ENTRY}
 </header>
-<h4 style="color: red">{Message}</h4>
+<h2 style="color: red; height: 20px;">{Message}</h2>
 <div style="">
 	{HTML_TEXT}
 </div>

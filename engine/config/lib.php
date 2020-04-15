@@ -66,10 +66,29 @@ function redirect($path = '', $msg = '')
 function getMsg()
 {
     $msg = '';
-    if ($_SESSION[MSG]) {
+    if (!empty($_SESSION[MSG])) {
         $msg = $_SESSION[MSG];
         unset($_SESSION[MSG]);
     }
 
     return $msg;
+}
+
+function countBasket()
+{
+    if (empty($_SESSION[GOODS])) {
+        return 0;
+    }
+
+    return count($_SESSION[GOODS]);
+}
+
+function clearStr($str)
+{
+    return mysqli_real_escape_string(getConnection(), strip_tags((trim($str))));
+}
+
+function isAdmin()
+{
+    return $_SESSION[ADMIN];
 }
