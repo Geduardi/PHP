@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="css/style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+</head>
+<body>
+<header>
+	<nav>
+		<div>
+			<a href="?page=1"><span>Главная</span></a>
+		</div>
+		<div>
+			<a href="?page=2"><span>Каталог</span></a>
+		</div>
+		<div>
+			<a href="?page=4"><span>Калькулятор</span></a>
+			<div>
+				<a href="?page=4&ver=1">Версия 1</a>
+				<a href="?page=4&ver=2">Версия 2</a>
+			</div>
+		</div>
+		<div>
+			<a href="?page=6"><span>Корзина</span>(<span id="basket">{COUNT}</span>)</a>
+		</div>
+		<div>
+			<a href="?page=3"><span>Заказы</span></a>
+		</div>
+	</nav>
+	{ENTRY}
+</header>
+<h2 style="color: red; height: 20px;">{Message}</h2>
+<div style="">
+	{HTML_TEXT}
+</div>
+
+</body>
+</html>
+
