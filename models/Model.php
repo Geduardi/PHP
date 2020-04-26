@@ -60,7 +60,10 @@ abstract class Model
 
     public function delete()
     {
-
+        //DELETE FROM `users` WHERE `users`.`id` = 3
+        $sql = "DELETE FROM {$this->getTableName()} WHERE id = :id";
+        $params = [':id' => $this->id];
+        $this->db->exec($sql,$params);
     }
 
     public function save()
