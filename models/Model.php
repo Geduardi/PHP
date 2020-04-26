@@ -29,29 +29,32 @@ abstract class Model
 
     protected function insert()
     {
-        $sql = "INSERT INTO {$this->getTableName()} (:fields) VALUES (:values)";
-        $params = [':fields' => '', ':values'=>''];
+        $sql = "INSERT INTO {$this->getTableName()} (";
+        $sql_mixin = ') VALUES (';
         foreach ($this as $fieldName => $value) {
             if ($fieldName == 'id' || is_object($value)){
                 continue;
             }
-            $params[':fields'] .= "$fieldName,";
-            $params[':values'] .= "'$value',";
+            $sql .= "$fieldName,";
+            $sql_mixin .= " :$fieldName,";
+            $params[":$fieldName"] = $value;
         }
+        $sql = substr($sql, 0, -1) . substr($sql_mixin,0,-1) . ')';
         $this->db->exec($sql,$params);
     }
 
     protected function update()
     {
-        $sql = "UPDATE {$this->getTableName()} SET :values WHERE id = {$this->id}";
-        $params = [':values'=>''];
+        $sql = "UPDATE {$this->getTableName()} SET ";
         foreach ($this as $fieldName => $value) {
             if (is_object($value)){
                 continue;
             }
-            $params[':values'] .= "$fieldName = '$value',";
+            $sql .= "$fieldName = :$fieldName,";
+            $params[":$fieldName"] = $value;
         }
-        $params[':values'] = substr($params[':values'],0,-1);
+        $sql = substr($sql, 0, -1) . " WHERE id = :id";
+        $params[':id'] = $this->id;
         $this->db->exec($sql,$params);
     }
 
