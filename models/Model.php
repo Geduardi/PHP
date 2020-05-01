@@ -7,45 +7,56 @@ abstract class Model
 {
     protected $db;
 
-    abstract protected function getTableName();
+    abstract protected static function getTableName();
 
     public function __construct()
     {
-        $this->db = DB::getInstance();
+        $this->db = static::getDB();
     }
 
-    public function getOne($id)
+    protected static function getDB():DB
     {
-        $sql = "SELECT * FROM {$this->getTableName()} WHERE id = :id";
+        return DB::getInstance();
+    }
+
+    public static function getOne($id)
+    {
+        $tableName = static::getTableName();
+        $sql = "SELECT * FROM $tableName WHERE id = :id";
         $params = [':id'=>$id];
-        return $this->db->find($sql,static::class,$params);
+        return static::getDB()->find($sql,static::class,$params);
     }
 
-    public function getAll()
+    public static function getAll()
     {
-        $sql = "SELECT * FROM {$this->getTableName()}";
-        return $this->db->findAll($sql, static::class);
+        $tableName = static::getTableName();
+        $sql = "SELECT * FROM {$tableName}";
+        return static::getDB()->findAll($sql, static::class);
     }
 
     protected function insert()
     {
-        $sql = "INSERT INTO {$this->getTableName()} (";
-        $sql_mixin = ') VALUES (';
+        $tableName = static::getTableName();
+        $columns = [];
         foreach ($this as $fieldName => $value) {
             if ($fieldName == 'id' || is_object($value)){
                 continue;
             }
-            $sql .= "$fieldName,";
-            $sql_mixin .= " :$fieldName,";
+            $columns[] = $fieldName;
             $params[":$fieldName"] = $value;
         }
-        $sql = substr($sql, 0, -1) . substr($sql_mixin,0,-1) . ')';
+        $sql = "INSERT INTO $tableName ("
+            . implode(', ',$columns) .
+            ") VALUES ("
+            . implode(', ', array_keys($params)) .
+            ")";
         $this->db->exec($sql,$params);
     }
 
     protected function update()
     {
-        $sql = "UPDATE {$this->getTableName()} SET ";
+        $tableName = static::getTableName();
+        $sql = "UPDATE $tableName SET ";
         foreach ($this as $fieldName => $value) {
             if (is_object($value)){
                 continue;
@@ -60,8 +71,8 @@ abstract class Model
 
     public function delete()
     {
-        //DELETE FROM `users` WHERE `users`.`id` = 3
-        $sql = "DELETE FROM {$this->getTableName()} WHERE id = :id";
+        $tableName = static::getTableName();
+        $sql = "DELETE FROM $tableName WHERE id = :id";
         $params = [':id' => $this->id];
         $this->db->exec($sql,$params);
     }

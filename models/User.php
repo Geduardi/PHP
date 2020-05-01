@@ -7,7 +7,7 @@ class User extends Model
     public $login;
     public $password;
     public $fio;
-    protected function getTableName()
+    protected static function getTableName()
     {
         return 'users';
     }
