@@ -11,6 +11,8 @@ class Autoloader
     {
         $className = str_replace("\\", DIRECTORY_SEPARATOR, $className);
         $file = dirname(__DIR__) . '/'  . substr($className,4) . '.php';
-        include $file;
+        if (file_exists($file)){
+            include $file;
+        }
     }
 }

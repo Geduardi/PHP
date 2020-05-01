@@ -3,7 +3,11 @@ namespace App\models;
 
 class User extends Model
 {
-    protected function getTableName()
+    public $id;
+    public $login;
+    public $password;
+    public $fio;
+    protected static function getTableName()
     {
         return 'users';
     }
