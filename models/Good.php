@@ -7,7 +7,7 @@ class Good extends Model
     public $name;
     public $price;
     public $count;
-    protected function getTableName()
+    protected static function getTableName()
     {
         return 'goods';
     }
