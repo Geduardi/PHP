@@ -3,13 +3,9 @@
 use App\services\DB;
 use App\models\User;
 use App\models\Good;
-use App\services\renderers\TmplRenderer;
-use App\services\renderers\TwigRender;
 
-//include dirname(__DIR__) . "/services/Autoloader.php";
-//spl_autoload_register([new App\services\Autoloader(), 'loadClass']);
-include dirname(__DIR__) . "/vendor/autoload.php";
-
+include dirname(__DIR__) . "/services/Autoloader.php";
+spl_autoload_register([new App\services\Autoloader(), 'loadClass']);
 
 $controllerName = 'user';
 if (!empty($_GET['c'])){
@@ -29,9 +25,7 @@ if (class_exists($controllerClass)){
     /**
      * @var \App\controllers\UserController $controller
      */
-//    $renderer = new TmplRenderer();
-    $renderer = new TwigRender();
-    $controller = new $controllerClass($renderer);
+    $controller = new $controllerClass();
     echo $controller->run($actionName);
 }
 

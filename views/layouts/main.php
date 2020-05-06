@@ -15,7 +15,7 @@
     <li><a href="?c=good&a=all">Каталог</a></li>
 </ul>
 <div>
-    {{ content | raw }}
+    <?=$content;?>
 </div>
 </body>
 </html>

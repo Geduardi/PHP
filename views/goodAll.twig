@@ -1,8 +1,0 @@
-{% for good in goods %}
-    <h1><a href="?c=good&a=one&id={{ good.id }}">
-            {{ good.name }}
-        </a></h1>
-    <p>{{ good.price }}</p>
-{% else %}
-    <h1>Не найден товар</h1>
-{% endfor %}

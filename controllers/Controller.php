@@ -4,18 +4,9 @@
 namespace App\controllers;
 
 
-use App\services\renderers\IRenderer;
-use App\services\renderers\TmplRenderer;
-
 abstract class Controller
 {
     protected $defaultAction = 'all';
-    protected $renderer;
-
-    public function __construct(IRenderer $renderer)
-    {
-        $this->renderer = $renderer;
-    }
 
     public function run($actionName)
     {
@@ -28,10 +19,17 @@ abstract class Controller
         $action .= 'Action';
         return $this->$action();
     }
-
-    protected function render($template, $params)
+    protected function render($template, $params = [])
     {
-        return $this->renderer->render($template, $params);
+        $content = $this->renderTmpl($template, $params);
+        return $this->renderTmpl('layouts/main',['content'=>$content]);
     }
 
+    protected function renderTmpl($template, $params = [])
+    {
+        ob_start();
+        extract($params);
+        include dirname(__DIR__) . '/views/' . $template . '.php';
+        return ob_get_clean();
+    }
 }
