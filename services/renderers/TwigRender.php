@@ -21,13 +21,13 @@ class TwigRender implements IRenderer
         $this->twig = new Environment($loader);
     }
 
-    public function render($template, $params = [])
-    {
-        $content = $this->renderTmpl($template,$params);
-        return $this->renderTmpl('layouts/main',['content'=>$content]);
-    }
+//    public function render($template, $params = [])
+//    {
+//        $content = $this->renderTmpl($template,$params);
+//        return $this->renderTmpl('layouts/main',['content'=>$content]);
+//    }
 
-    protected function renderTmpl($template, $params = [])
+    public function render($template, $params = [])
     {
         $template .= ".twig";
         return $this->twig->render($template,$params);

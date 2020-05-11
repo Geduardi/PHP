@@ -67,8 +67,10 @@ class DB implements DBI
 
     public function exec(string $sql, array $params = [])
     {
-        var_dump($sql);
-        var_dump($params);
-        var_dump($this->query($sql,$params)->errorInfo());
+        $this->query($sql,$params);
+    }
+    public function lastInsertId()
+    {
+        return $this->getConnection()->lastInsertId();
     }
 }

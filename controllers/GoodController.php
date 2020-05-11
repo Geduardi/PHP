@@ -1,10 +1,9 @@
 <?php
 
-
 namespace App\controllers;
 
-
-use App\models\Good;
+use App\entities\Good;
+use App\repositories\GoodRepository;
 
 class GoodController extends Controller
 {
@@ -14,12 +13,39 @@ class GoodController extends Controller
         if (!empty($_GET['id'])){
             $id = $_GET['id'];
         }
-        $good = Good::getOne($id);
-        return $this->render('goodOne', ['good'=>$good]);
+        $good = (new GoodRepository())->getOne($id);
+        return $this->render('goodOne', [
+            'good'=>$good,
+            'menu'=>$this->getMenu()
+        ]);
     }
     public function allAction()
     {
-        $goods = Good::getAll();
-        return $this->render('goodAll', ['goods'=>$goods]);
+        $goods = (new GoodRepository())->getAll();
+        return $this->render('goodAll', [
+            'goods'=>$goods,
+            'menu'=>$this->getMenu(),
+            'title'=>'Все товары'
+        ]);
+    }
+    public function insertAction()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $good = new Good();
+            $good->name = $_POST['name'];
+            $good->count = $_POST['count'];
+            $good->price = $_POST['price'];
+
+            (new GoodRepository())->save($good);
+            header('Location: /good/all' );
+            return '';
+        }
+
+        return $this->render(
+            'goodAdd',
+            [
+                'menu' => $this->getMenu(),
+            ]
+        );
     }
 }

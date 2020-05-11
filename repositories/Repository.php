@@ -1,13 +1,21 @@
 <?php
-namespace App\models;
 
+
+namespace App\repositories;
+
+
+use App\entities\Entity;
 use App\services\DB;
 
-abstract class Model
+abstract class Repository
 {
+    /**
+     * @var DB
+     */
     protected $db;
 
-    abstract protected static function getTableName();
+    abstract protected function getTableName();
+    abstract protected function getEntityName();
 
     public function __construct()
     {
@@ -19,27 +27,27 @@ abstract class Model
         return DB::getInstance();
     }
 
-    public static function getOne($id)
+    public function getOne($id)
     {
-        $tableName = static::getTableName();
+        $tableName = $this->getTableName();
         $sql = "SELECT * FROM $tableName WHERE id = :id";
         $params = [':id'=>$id];
-        return static::getDB()->find($sql,static::class,$params);
+        return static::getDB()->find($sql,$this->getEntityName(),$params);
     }
 
-    public static function getAll()
+    public function getAll()
     {
-        $tableName = static::getTableName();
+        $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName}";
-        return static::getDB()->findAll($sql, static::class);
+        return static::getDB()->findAll($sql, $this->getEntityName());
     }
 
-    protected function insert()
+    protected function insert(Entity $entity)
     {
         $tableName = static::getTableName();
         $columns = [];
-        foreach ($this as $fieldName => $value) {
-            if ($fieldName == 'id' || is_object($value)){
+        foreach ($entity as $fieldName => $value) {
+            if ($fieldName == 'id'){
                 continue;
             }
             $columns[] = $fieldName;
@@ -51,16 +59,14 @@ abstract class Model
             . implode(', ', array_keys($params)) .
             ")";
         $this->db->exec($sql,$params);
+        $entity->id = $this->db->lastInsertId();
     }
 
-    protected function update()
+    protected function update(Entity $entity)
     {
-        $tableName = static::getTableName();
+        $tableName = $this->getTableName();
         $sql = "UPDATE $tableName SET ";
-        foreach ($this as $fieldName => $value) {
-            if (is_object($value)){
-                continue;
-            }
+        foreach ($entity as $fieldName => $value) {
             $sql .= "$fieldName = :$fieldName,";
             $params[":$fieldName"] = $value;
         }
@@ -69,20 +75,20 @@ abstract class Model
         $this->db->exec($sql,$params);
     }
 
-    public function delete()
+    public function delete(Entity $entity)
     {
-        $tableName = static::getTableName();
+        $tableName = $this->getTableName();
         $sql = "DELETE FROM $tableName WHERE id = :id";
         $params = [':id' => $this->id];
         $this->db->exec($sql,$params);
     }
 
-    public function save()
+    public function save(Entity $entity)
     {
         if (empty($this->id)){
-            $this->insert();
+            $this->insert($entity);
         } else{
-            $this->update();
+            $this->update($entity);
         }
     }
 }

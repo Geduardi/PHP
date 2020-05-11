@@ -21,17 +21,41 @@ abstract class Controller
     {
         $action = $this->defaultAction;
         if (!empty($actionName)){
-            if (method_exists($this, $action . 'Action')){
-                $action = $actionName;
+            $action = $actionName;
+            if (!method_exists($this, $action . 'Action')){
+                return $this->render('404');
             }
         }
         $action .= 'Action';
         return $this->$action();
     }
 
-    protected function render($template, $params)
+    protected function render($template, $params = [])
     {
         return $this->renderer->render($template, $params);
+    }
+
+    protected function getMenu()
+    {
+        return [
+            [
+                'name' => 'Пользователи',
+                'href' => '/user/all',
+            ],
+            [
+                'name' => 'Товары',
+                'href' => '/good/all',
+            ],
+            [
+                'name' => 'Добавить товар',
+                'href' => '/good/insert',
+            ],
+            [
+                'name' => 'Добавить пользователя',
+                'href' => '/user/insert',
+            ],
+
+        ];
     }
 
 }
