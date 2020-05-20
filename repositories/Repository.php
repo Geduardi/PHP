@@ -4,6 +4,7 @@
 namespace App\repositories;
 
 
+use App\core\Container;
 use App\entities\Entity;
 use App\services\DB;
 
@@ -13,18 +14,20 @@ abstract class Repository
      * @var DB
      */
     protected $db;
+    protected $container;
 
     abstract protected function getTableName();
     abstract protected function getEntityName();
 
-    public function __construct()
+    public function setContainer(Container $container)
     {
-        $this->db = static::getDB();
+        $this->container = $container;
+        $this->setDB();
     }
 
-    protected static function getDB():DB
+    private function setDB()
     {
-        return DB::getInstance();
+        $this->db = $this->container->db;
     }
 
     public function getOne($id)
@@ -32,14 +35,14 @@ abstract class Repository
         $tableName = $this->getTableName();
         $sql = "SELECT * FROM $tableName WHERE id = :id";
         $params = [':id'=>$id];
-        return static::getDB()->find($sql,$this->getEntityName(),$params);
+        return $this->db->find($sql,$this->getEntityName(),$params);
     }
 
     public function getAll()
     {
         $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName}";
-        return static::getDB()->findAll($sql, $this->getEntityName());
+        return $this->db->findAll($sql, $this->getEntityName());
     }
 
     protected function insert(Entity $entity)

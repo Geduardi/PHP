@@ -14,7 +14,7 @@ class UserController extends Controller
         if (!empty($_GET['id'])){
             $id = $_GET['id'];
         }
-        $user = (new UserRepository())->getOne($id);
+        $user = $this->getRepository('User')->getOne($id);
         return $this->render('userOne', [
             'user'=>$user,
             'menu'=>$this->getMenu()
@@ -22,7 +22,7 @@ class UserController extends Controller
     }
     public function allAction()
     {
-        $users = (new UserRepository())->getAll();
+        $users = $this->getRepository('User')->getAll();
         return $this->render('userAll', [
             'users'=>$users,
             'menu'=>$this->getMenu(),
@@ -37,7 +37,7 @@ class UserController extends Controller
             $user->password = $_POST['password'];
             $user->fio = $_POST['fio'];
 
-            (new UserRepository())->save($user);
+            $this->getRepository('User')->save($user);
             header('Location: /user/all' );
             return '';
         }

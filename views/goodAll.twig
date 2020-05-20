@@ -6,6 +6,7 @@
                 {{ good.name }}
             </a></h1>
         <p>{{ good.price }}</p>
+        <a href="/basket/add?id={{ good.id }}">Добавить в корзину</a>
     {% else %}
         <h1>Не найден товар</h1>
     {% endfor %}

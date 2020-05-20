@@ -14,6 +14,7 @@ class Request
 
     public function __construct()
     {
+        session_start();
         $this->queryString = $_SERVER['REQUEST_URI'];
         $this->prepareRequest();
 
@@ -40,8 +41,6 @@ class Request
         if (preg_match_all($pattern, $this->queryString, $matches)) {
             $this->controllerName = $matches['controller'][0];
             $this->actionName = $matches['action'][0];
-        } else {
-            $this->controllerName = 'Good';
         }
 
         if (!empty($_GET['id'])) {
@@ -71,5 +70,36 @@ class Request
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getSession($key = null)
+    {
+        if (empty($key)){
+            return $_SESSION;
+        }
+
+        if (empty($_SESSION[$key])){
+            return [];
+        }
+
+        return $_SESSION[$key];
+    }
+
+    public function setSession($key, $value)
+    {
+        $_SESSION[$key] = $value;
+    }
+
+    public function sessionDestroy()
+    {
+        session_destroy();
+    }
+
+    public function redirectApp($msg = null)
+    {
+        if (!empty($msg)){
+            $this->setSession('msg',$msg);
+        }
+        header('location: ' . $_SERVER['HTTP_REFERER']);
     }
 }
