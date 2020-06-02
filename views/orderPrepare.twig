@@ -1,0 +1,21 @@
+{% extends 'layouts/main.twig' %}
+
+{% block content %}
+    {% for order in orders %}
+        {% if isAdmin == true %}
+            <form action="?page=3&action=upd" method="post">
+                <h2><a href="?page=3&action=one&orderId={$order['id']}">Заказ №{$order['id']}</a></h2>
+                <h4>Статус заказа: <input name="status" value="{$order['status']}">
+                    <input type="submit" value="Сохранить изменения"></h4>
+                <p>ID пользователя: {$order['user_id']}</p>
+                <input type="hidden" value="{$order['id']}" name="orderId">
+            </form>
+        {% else %}
+            <h2><a href="/order/one?id={{ order.id }}">Заказ №{{order.id}}</a></h2>
+            <h4>Статус заказа: {{ order.status }}</h4>
+            <p>ID пользователя: {{ order.user_id }}</p>
+        {% endif %}
+    {% else %}
+        <h1>Не найден заказ</h1>
+    {% endfor %}
+{% endblock %}
