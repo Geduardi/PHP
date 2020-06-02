@@ -4,17 +4,25 @@
 namespace App\controllers;
 
 
+use App\core\App;
 use App\services\renderers\IRenderer;
-use App\services\renderers\TmplRenderer;
 
 abstract class Controller
 {
     protected $defaultAction = 'all';
+    /**
+     * @var IRenderer
+     */
     protected $renderer;
+    /**
+     * @var App
+     */
+    protected $app;
 
-    public function __construct(IRenderer $renderer)
+    public function __construct(IRenderer $renderer, App $app)
     {
         $this->renderer = $renderer;
+        $this->app = $app;
     }
 
     public function run($actionName)
@@ -51,11 +59,32 @@ abstract class Controller
                 'href' => '/good/insert',
             ],
             [
-                'name' => 'Добавить пользователя',
+                'name' => 'Добавить администратора',
                 'href' => '/user/insert',
+            ],
+            [
+                'name' => 'Корзина',
+                'href' => '/basket',
+            ],
+            [
+                'name' => 'Заказы',
+                'href' => '/order',
+            ],
+            [
+                'name' => 'Личный кабинет',
+                'href' => '/auth',
             ],
 
         ];
+    }
+
+    /**
+     * @param $repositoryName
+     * @return \App\repositories\Repository|null
+     */
+    protected function getRepository($repositoryName)
+    {
+        return $this->app->db->getRepository($repositoryName);
     }
 
 }

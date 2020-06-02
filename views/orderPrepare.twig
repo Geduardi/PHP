@@ -1,0 +1,9 @@
+{% extends 'layouts/main.twig' %}
+
+{% block content %}
+    <form action="/order/insert" method="post">
+        <h4>Введите адрес доставки:</h4>
+        <input type="text" style="width: 30vw;height: 30px;" name="adress" minlength="3"><br>
+        <input type="submit" value="Завершить" style="width: 30vw; height: 30px;">
+    </form>
+{% endblock %}

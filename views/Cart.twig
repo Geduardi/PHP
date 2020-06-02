@@ -1,0 +1,15 @@
+{% extends 'layouts/main.twig' %}
+
+{% block content %}
+    {% for id,item in cart %}
+        <h1><a href="/good/one?id={{ id }}">
+                {{ item.name }}
+            </a></h1>
+        <p>{{ item.price }}$ x  {{ item.count }}</p>
+        <p><a href="/basket/add?id={{ id }}">Добавить один</a> | <a href="/basket/delete?id={{ id }}">Убрать один</a> | <a href="/basket/deleteAll?id={{ id }}">Убрать весь товар</a></p>
+        <hr>
+    {% else %}
+        <h1>Корзина пуста</h1>
+    {% endfor %}
+    <h4><a href="/order/prepare">Оформить заказ</a></h4>
+{% endblock %}

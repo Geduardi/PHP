@@ -1,23 +1,40 @@
 <?php
 namespace App\services;
 
+use App\core\Container;
+use App\repositories\Repository;
 use App\traits\SingletonT;
 
 class DB implements DBI
 {
 
-    use SingletonT;
-
-    protected $config = [
-        'driver' => 'mysql',
-        'host' => 'localhost',
-        'dbname' => 'gbphp',
-        'charset' => 'UTF8',
-        'username' => 'root',
-        'password' => '',
-    ];
-
+    protected $config = [];
     protected $connection;
+    protected $container;
+
+    public function __construct(array $config)
+    {
+        $this->config = $config;
+    }
+
+    public function setContainer(Container $container)
+    {
+        $this->container = $container;
+    }
+
+    /**
+     * @param $repositoryName
+     * @return Repository|null
+     */
+
+    public function getRepository($repositoryName)
+    {
+        if (empty($this->container)){
+            return null;
+        }
+        $repositoryName .= 'Repository';
+        return $this->container->$repositoryName;
+    }
 
     public function getConnection()
     {
