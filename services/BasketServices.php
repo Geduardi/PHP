@@ -36,7 +36,7 @@ class BasketServices
         return true;
     }
 
-    public function del(Request $request)
+    public function delete(Request $request)
     {
         $id = $request->getId();
         if (empty($id)){
@@ -57,7 +57,7 @@ class BasketServices
         return true;
     }
 
-    public function delAll(Request $request)
+    public function deleteAll(Request $request)
     {
         $id = $request->getId();
         if (empty($id)){

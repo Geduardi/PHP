@@ -5,8 +5,10 @@ namespace App\core;
 
 
 use App\controllers\Controller;
+use App\services\AuthServices;
 use App\services\BasketServices;
 use App\services\DB;
+use App\services\OrderServices;
 use App\services\renderers\TwigRender;
 use App\services\Request;
 
@@ -17,6 +19,8 @@ use App\services\Request;
  * @property Request request
  * @property DB db
  * @property BasketServices BasketServices
+ * @property AuthServices AuthServices
+ * @property OrderServices OrderServices
  */
 
 class App
@@ -46,8 +50,7 @@ class App
 
         $controllerName = $request->getControllerName();
         if (empty($controllerName)) {
-            $controllerName = 'good';
-
+            $controllerName = $this->config['defaultControllerName'];
         }
         $actionName = $request->getActionName();
 

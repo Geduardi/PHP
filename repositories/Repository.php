@@ -47,10 +47,10 @@ abstract class Repository
 
     protected function insert(Entity $entity)
     {
-        $tableName = static::getTableName();
+        $tableName = $this->getTableName();
         $columns = [];
         foreach ($entity as $fieldName => $value) {
-            if ($fieldName == 'id'){
+            if ($fieldName == 'id' || $value == null){
                 continue;
             }
             $columns[] = $fieldName;
@@ -70,11 +70,14 @@ abstract class Repository
         $tableName = $this->getTableName();
         $sql = "UPDATE $tableName SET ";
         foreach ($entity as $fieldName => $value) {
+            if ($value == null || $fieldName == 'id'){
+                continue;
+            }
             $sql .= "$fieldName = :$fieldName,";
             $params[":$fieldName"] = $value;
         }
         $sql = substr($sql, 0, -1) . " WHERE id = :id";
-        $params[':id'] = $this->id;
+        $params[':id'] = $entity->id;
         $this->db->exec($sql,$params);
     }
 
@@ -82,13 +85,13 @@ abstract class Repository
     {
         $tableName = $this->getTableName();
         $sql = "DELETE FROM $tableName WHERE id = :id";
-        $params = [':id' => $this->id];
+        $params = [':id' => $entity->id];
         $this->db->exec($sql,$params);
     }
 
     public function save(Entity $entity)
     {
-        if (empty($this->id)){
+        if (empty($entity->id)){
             $this->insert($entity);
         } else{
             $this->update($entity);

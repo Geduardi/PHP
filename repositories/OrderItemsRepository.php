@@ -4,9 +4,11 @@
 namespace App\repositories;
 
 
-use App\entities\Order_items;
 
-class Order_itemsRepository extends Repository
+
+use App\entities\OrderItems;
+
+class OrderItemsRepository extends Repository
 {
     protected function getTableName()
     {
@@ -15,6 +17,14 @@ class Order_itemsRepository extends Repository
 
     protected function getEntityName()
     {
-        return Order_items::class;
+        return OrderItems::class;
+    }
+
+    public function getAllInOrder($order_id)
+    {
+        $tableName = $this->getTableName();
+        $sql = "SELECT * FROM {$tableName} WHERE order_id = :order_id";
+        $params = [':order_id'=>$order_id];
+        return $this->db->findAll($sql, $this->getEntityName(),$params);
     }
 }

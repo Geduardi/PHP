@@ -1,13 +1,41 @@
 {% extends 'layouts/main.twig' %}
 
 {% block content %}
-    {% for good in goods %}
-        <h1><a href="/good/one?id={{ good.id }}">
-                {{ good.name }}
-            </a></h1>
-        <p>{{ good.price }}</p>
-        <a href="/basket/add?id={{ good.id }}">Добавить в корзину</a>
+    {% for order in orders %}
+        {% if isAdmin == true %}
+            <form action="/order/update" method="post">
+                <h2><a href="/order/one?id={{ order.id }}">Заказ №{{ order.id }}</a></h2>
+                <h4>Статус заказа: <select name="status" value="{{order.status}}">
+                        <option value="Зарегистрирован"
+                            {% if order.status == "Зарегистрирован" %}
+                                selected
+                            {% endif  %}
+                        >Зарегистрирован</option>
+                        <option value="В пути"
+                            {% if order.status == "В пути" %}
+                                selected
+                            {% endif  %}
+                        >В пути</option>
+                        <option value="Доставлен"
+                            {% if order.status == "Доставлен" %}
+                                selected
+                            {% endif  %}
+                        >Доставлен</option>
+                        </select>
+                    <input type="submit" value="Сохранить изменения"></h4>
+                <h4>Адрес доставки: {{ order.adress }}</h4>
+                <a href="/user/one?id={{ order.user_id }}"><p>ID пользователя: {{ order.user_id }}</p></a>
+                <a href="/order/delete?id={{ order.id }}">Удалить заказ</a>
+                <input type="hidden" value="{{order.id}}" name="order_id">
+            </form>
+        {% else %}
+            <h2><a href="/order/one?id={{ order.id }}">Заказ №{{order.id}}</a></h2>
+            <h4>Статус заказа: {{ order.status }}</h4>
+            <h4>Адрес доставки: {{ order.adress }}</h4>
+            <a href="/user/one?id={{ order.user_id }}"><p>ID пользователя: {{ order.user_id }}</p></a>
+            <a href="/order/delete?id={{ order.id }}">Удалить заказ</a>
+        {% endif %}
     {% else %}
-        <h1>Не найден товар</h1>
+        <h1>Не найден заказ</h1>
     {% endfor %}
 {% endblock %}

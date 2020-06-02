@@ -34,8 +34,9 @@ class UserController extends Controller
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $user = new User();
             $user->login = $_POST['login'];
-            $user->password = $_POST['password'];
+            $user->password = password_hash($_POST['password'],PASSWORD_DEFAULT);
             $user->fio = $_POST['fio'];
+            $user->isAdmin = 1;
 
             $this->getRepository('User')->save($user);
             header('Location: /user/all' );

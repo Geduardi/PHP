@@ -1,8 +1,12 @@
 {% extends 'layouts/main.twig' %}
 
 {% block content %}
-    <h1>{{ good.name }}</h1>
-    <p>{{ good.price }}</p>
+    {% for item in order_items %}
+    <h2><a href="/good/one?id={{ item.item_id }}">{{ item.item_name }}</a></h2>
+    <h3>Стоимость: {{item.price}}</h3>
+    <h4>Количество: {{ item.count }}</h4>
+    <hr>
+    {% endfor %}
 {% endblock %}
 
 

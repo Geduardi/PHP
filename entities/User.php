@@ -6,4 +6,5 @@ class User extends Entity
     public $login;
     public $password;
     public $fio;
+    public $isAdmin;
 }

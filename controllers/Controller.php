@@ -59,12 +59,20 @@ abstract class Controller
                 'href' => '/good/insert',
             ],
             [
-                'name' => 'Добавить пользователя',
+                'name' => 'Добавить администратора',
                 'href' => '/user/insert',
             ],
             [
                 'name' => 'Корзина',
                 'href' => '/basket',
+            ],
+            [
+                'name' => 'Заказы',
+                'href' => '/order',
+            ],
+            [
+                'name' => 'Личный кабинет',
+                'href' => '/auth',
             ],
 
         ];

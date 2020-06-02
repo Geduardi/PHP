@@ -27,8 +27,20 @@ return [
         'UserRepository' => [
             'class' => \App\repositories\UserRepository::class
         ],
+        'OrderRepository' => [
+            'class' => \App\repositories\OrderRepository::class
+        ],
+        'OrderItemsRepository' => [
+            'class' => \App\repositories\OrderItemsRepository::class
+        ],
         'BasketServices' => [
             'class' => \App\services\BasketServices::class
+        ],
+        'AuthServices' => [
+            'class' => \App\services\AuthServices::class
+        ],
+        'OrderServices' => [
+            'class' => \App\services\OrderServices::class
         ]
     ]
 ];

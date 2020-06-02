@@ -79,10 +79,17 @@ class Request
         }
 
         if (empty($_SESSION[$key])){
-            return [];
+            return null;
         }
 
         return $_SESSION[$key];
+    }
+
+    public function getMsg()
+    {
+        $msg = $this->getSession('msg');
+        unset($_SESSION['msg']);
+        return $msg;
     }
 
     public function setSession($key, $value)
@@ -90,16 +97,40 @@ class Request
         $_SESSION[$key] = $value;
     }
 
+    public function isLogged()
+    {
+        if (!empty($_SESSION['auth'])){
+            return true;
+        }
+
+        return false;
+    }
+
+    public function idAdmin()
+    {
+        if ($this->getSession('isAdmin')){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function sessionDestroy()
     {
         session_destroy();
     }
 
-    public function redirectApp($msg = null)
+    public function redirectApp($msg = null, $location = null)
     {
         if (!empty($msg)){
             $this->setSession('msg',$msg);
         }
-        header('location: ' . $_SERVER['HTTP_REFERER']);
+
+        if (empty($location)){
+            header('location: ' . $_SERVER['HTTP_REFERER']);
+        } else {
+            header('location: ' . $location);
+        }
+
     }
 }
